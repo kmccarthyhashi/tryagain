@@ -78,7 +78,7 @@ resource "aws_elb" "elb" {
   }
 }
 
-# Target group
+# Target group -- 
 resource "aws_alb_target_group" "default-target-group" {
   name     = "${var.ec2_instance_name}-tg"
   port     = 80
