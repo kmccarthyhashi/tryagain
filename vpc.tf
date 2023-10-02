@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
-    Name = "Project VPC 2"
+    Name = "Project VPC 1"
   }
 }
 
@@ -96,18 +96,18 @@ resource "aws_alb_target_group" "default-target-group" {
   }
 }
 
+########################
+# A NAT gateway allows instances in our private subnets to connect to
+# services outside of our vpc but prohibits external services from connecting
+# with those instances
+########################
+
 # provides an Elastic IP resource
 resource "aws_eip" "nat_gateway" {
   domain                    = "vpc"
   associate_with_private_ip = "10.0.0.5"
   depends_on                = [aws_internet_gateway.gw]
 }
-
-########################
-# A NAT gateway allows instances in our private subnets to connect to
-# services outside of our vpc but prohibits external services from connecting
-# with those instances
-########################
 
 resource "aws_nat_gateway" "ngw" {
   allocation_id = aws_eip.nat_gateway.id
