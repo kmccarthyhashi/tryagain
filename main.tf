@@ -1,7 +1,7 @@
 # launch template used to create instances and autoscaling group
 resource "aws_launch_template" "amitemp" {
   name_prefix   = "section1"
-  vpc_security_group_ids = ["sg-0c0f1556202be9e70"]
+  vpc_security_group_ids = [aws_security_group.load-balancer.id]
   image_id      = "ami-0a55cdf919d10eac9"
   instance_type = "t2.micro"
   placement {
