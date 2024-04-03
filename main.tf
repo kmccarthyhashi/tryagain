@@ -38,6 +38,7 @@ resource "aws_instance" "my-machine" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ec2.id]
   subnet_id              = aws_subnet.public_subnets[count.index].id
+  associate_public_ip_address = true
 
   # install and run nginx on ec2 instances
   user_data = file("userdata.tpl")
