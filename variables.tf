@@ -20,7 +20,8 @@ variable "private_key_path" {}
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "Public Subnet CIDR values"
-  default     = ["178.0.11.0/24", "178.0.12.0/24", "178.0.13.0/24"]
+  default     = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
+  # default     = ["178.0.11.0/24", "178.0.12.0/24", "178.0.13.0/24"]
 }
 
 # define 3 azs that we want deploy across
