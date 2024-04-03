@@ -14,7 +14,8 @@ resource "aws_autoscaling_group" "ec2-cluster" {
   max_size           = 5
   min_size           = 3
   health_check_type  = "EC2"
-  vpc_zone_identifier = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id, aws_subnet.private_subnets[2].id]
+  # vpc_zone_identifier = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id, aws_subnet.private_subnets[2].id]
+  vpc_zone_identifier = [aws_subnet.public_subnets[0].id, aws_subnet.public_subnets[1].id, aws_subnet.public_subnets[2].id]
   target_group_arns = [aws_alb_target_group.default-target-group.arn]
   # took out azs and replaced with vpc_zone_identifier
   # connects vpc in autoscaling group
@@ -36,7 +37,7 @@ resource "aws_instance" "my-machine" {
   ami                    = lookup(var.ec2_ami, var.region)
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ec2.id]
-  subnet_id              = aws_subnet.private_subnets[count.index].id
+  subnet_id              = aws_subnet.public_subnets[count.index].id
 
   # install and run nginx on ec2 instances
   user_data = file("userdata.tpl")
