@@ -16,5 +16,11 @@
 #}
 
 output "web_instance_ip" {
+  value = aws_instance.my-machine[0].public_ip
+}
+output "web_instance_ip" {
+  value = aws_instance.my-machine[1].public_ip
+}
+output "web_instance_ip" {
   value = aws_instance.my-machine[2].public_ip
 }
