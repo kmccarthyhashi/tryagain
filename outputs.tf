@@ -15,12 +15,12 @@
 #  value = aws_elb.elb.source_security_group_id
 #}
 
-output "web_instance_ip" {
+output "web_instance_ip_0" {
   value = aws_instance.my-machine[0].public_ip
 }
-output "web_instance_ip" {
+output "web_instance_ip_1" {
   value = aws_instance.my-machine[1].public_ip
 }
-output "web_instance_ip" {
+output "web_instance_ip_2" {
   value = aws_instance.my-machine[2].public_ip
 }
