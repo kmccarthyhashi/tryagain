@@ -16,5 +16,5 @@ output "elb_source_security_group_id" {
 }
 
 output "web_instance_ip" {
-  value = aws_instance.my-machine.public_ip
+  value = aws_instance.my-machine[2].public_ip
 }
