@@ -6,14 +6,21 @@ variable "aws_region" {
 }
 
 variable "key_name" {}
-variable "private_key_path" {}
+# variable "private_key_path" {}
 
 
 # define 3 private subnets
+#variable "private_subnet_cidrs" {
+#  type        = list(string)
+#  description = "Private Subnet CIDR values"
+#  default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+#}
+
+# define 3 public subnets
 variable "private_subnet_cidrs" {
   type        = list(string)
-  description = "Private Subnet CIDR values"
-  default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  description = "Public Subnet CIDR values"
+  default     = ["178.0.10.0/24", "178.0.11.0/24", "178.0.12.0/24"]
 }
 
 # define 3 azs that we want deploy across
