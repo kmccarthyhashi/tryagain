@@ -26,7 +26,7 @@
 #    version = "$Latest"
 
 #  }
-}
+# }
 
 # EC2 instances
 resource "aws_instance" "my-machine" {
