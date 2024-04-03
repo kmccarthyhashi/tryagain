@@ -14,3 +14,7 @@ output "elb_dns_name" {
 output "elb_source_security_group_id" {
   value = aws_elb.elb.source_security_group_id
 }
+
+output "web_instance_ip" {
+  value = aws_instance.my-machine.public_ip
+}
