@@ -6,7 +6,7 @@ variable "aws_region" {
 }
 
 variable "key_name" {}
-# variable "private_key_path" {}
+variable "private_key_path" {}
 
 
 # define 3 private subnets
