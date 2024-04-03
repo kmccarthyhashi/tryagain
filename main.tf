@@ -52,7 +52,7 @@ resource "aws_instance" "my-machine" {
 # Instance Security group (traffic ELB -> EC2, ssh -> EC2)
 resource "aws_security_group" "ec2" {
   name        = "ec2_security_group"
-  description = "Allows inbound access from the ALB only"
+  description = "Allows ssh http inbound traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
