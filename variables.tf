@@ -17,7 +17,7 @@ variable "key_name" {}
 #}
 
 # define 3 public subnets
-variable "private_subnet_cidrs" {
+variable "public_subnet_cidrs" {
   type        = list(string)
   description = "Public Subnet CIDR values"
   default     = ["178.0.10.0/24", "178.0.11.0/24", "178.0.12.0/24"]
