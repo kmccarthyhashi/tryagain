@@ -1,9 +1,9 @@
 # aws region variable
-# variable "aws_region" {
-#   description = "AWS Region to launch servers"
-#   default     = "us-west-2"
+variable "aws_region" {
+  description = "AWS Region to launch servers"
+  default     = "us-west-2"
 
-# }
+}
 
 variable "key_name" {}
 variable "private_key_path" {}
