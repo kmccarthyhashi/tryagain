@@ -1,6 +1,5 @@
 # VPC creation
 resource "aws_vpc" "main" {
-  # cidr_block           = "10.0.0.0/16" #private
   cidr_block           = "10.1.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -30,7 +29,6 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-# ADDED
 resource "aws_route_table" "public-route-table" {
   vpc_id = aws_vpc.main.id
 
@@ -44,7 +42,7 @@ resource "aws_route_table" "public-route-table" {
    }
  }
 
-# Associate private subnets to route table
+# Associate public subnets to route table
 resource "aws_route_table_association" "public_subnet_asso" {
   count          = length(var.public_subnet_cidrs)
   subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
@@ -59,7 +57,7 @@ resource "aws_security_group" "load-balancer" {
 
  ingress {
    description = "SSH from VPC"
-   from_port   = 22
+   from_port   = 22 # specifc for SSH communication
    to_port     = 22
    protocol    = "tcp"
    cidr_blocks = ["0.0.0.0/0"]
@@ -68,7 +66,7 @@ resource "aws_security_group" "load-balancer" {
 
  ingress {
    description = "HTTP from VPC"
-   from_port   = 80
+   from_port   = 80 #specific for HTTP requests: allows us to deliver web content to clients
    to_port     = 80
    protocol    = "tcp"
    cidr_blocks = ["0.0.0.0/0"]
