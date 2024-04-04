@@ -25,9 +25,9 @@ variable "azs" {
 }
 
 # Create a Variable for region
-variable "region" {
-  default = "us-west-2a"
-}
+# variable "region" {
+#   default = "us-west-2a"
+# }
 
 # Create a variable for 3 amis
 # Deploy 3 amis across 3 different AZ's (do so via subnets)

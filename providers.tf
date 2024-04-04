@@ -12,10 +12,3 @@ provider "aws" {
   region     = var.aws_region
 }
 
-########################
-# AWS Credentials note:
-# chose not to include creds in .tfvars file as this is no longer recommended
-# will manually enter creds on CLI for now. Future iteration could be performed 
-# in TFC to streamline the operation
-########################
-
