@@ -9,19 +9,11 @@ variable "key_name" {}
 variable "private_key_path" {}
 
 
-# define 3 private subnets
-#variable "private_subnet_cidrs" {
-#  type        = list(string)
-#  description = "Private Subnet CIDR values"
-#  default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-#}
-
 # define 3 public subnets
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "Public Subnet CIDR values"
   default     = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-  # default     = ["178.0.11.0/24", "178.0.12.0/24", "178.0.13.0/24"]
 }
 
 # define 3 azs that we want deploy across
@@ -31,7 +23,6 @@ variable "azs" {
   default     = ["us-west-2a", "us-west-2b", "us-west-2c"]
 
 }
-
 
 # Create a Variable for region
 variable "region" {
@@ -60,3 +51,11 @@ variable "health_check_path" {
   description = "Health check path for the default target group"
   default     = "/"
 }
+
+
+# define 3 private subnets
+#variable "private_subnet_cidrs" {
+#  type        = list(string)
+#  description = "Private Subnet CIDR values"
+#  default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+#}

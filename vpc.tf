@@ -18,18 +18,6 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-# Creation of 3 private subnets
-# resource "aws_subnet" "private_subnets" {
-#  count             = length(var.private_subnet_cidrs)
-#  vpc_id            = aws_vpc.main.id
-#  cidr_block        = element(var.private_subnet_cidrs, count.index)
-#  availability_zone = element(var.azs, count.index)
-
-#  tags = {
-#    Name = "Private Subnet ${count.index + 1}"
-#  }
-# }
-
 # Creation of 3 public subnets
 resource "aws_subnet" "public_subnets" {
   count             = length(var.public_subnet_cidrs)
@@ -64,128 +52,88 @@ resource "aws_route_table_association" "public_subnet_asso" {
 }
 
 # Security group allowing traffice from anywhere to port 80
-#resource "aws_security_group" "load-balancer" {
-#  name        = "load_balancer_security_group"
-#  description = "Controls access to the ELB: allow ssh http inbound traffic"
-#  vpc_id      = aws_vpc.main.id
+resource "aws_security_group" "load-balancer" {
+ name        = "load_balancer_security_group"
+ description = "Controls access to the ELB: allow ssh http inbound traffic"
+ vpc_id      = aws_vpc.main.id
 
-#  ingress {
-#    description = "SSH from VPC"
-#    from_port   = 22
-#    to_port     = 22
-#    protocol    = "tcp"
-#    cidr_blocks = ["0.0.0.0/0"]
-#    ipv6_cidr_blocks = ["::/0"]
-#  }
+ ingress {
+   description = "SSH from VPC"
+   from_port   = 22
+   to_port     = 22
+   protocol    = "tcp"
+   cidr_blocks = ["0.0.0.0/0"]
+   ipv6_cidr_blocks = ["::/0"]
+ }
 
-#  ingress {
-#    description = "HTTP from VPC"
-#    from_port   = 80
-#    to_port     = 80
-#    protocol    = "tcp"
-#    cidr_blocks = ["0.0.0.0/0"]
-#    ipv6_cidr_blocks = ["::/0"]
-#  }
+ ingress {
+   description = "HTTP from VPC"
+   from_port   = 80
+   to_port     = 80
+   protocol    = "tcp"
+   cidr_blocks = ["0.0.0.0/0"]
+   ipv6_cidr_blocks = ["::/0"]
+ }
 
-#  egress {
-#    from_port   = 0
-#    to_port     = 0
-#    protocol    = "-1"
-#    cidr_blocks = ["0.0.0.0/0"]
-#    ipv6_cidr_blocks = ["::/0"]
-#  }
-# resource "aws_security_group" "load-balancer" {
-#  name        = "load_balancer_security_group"
-#  description = "Controls access to the ELB: allow ssh http inbound traffic"
-#  vpc_id      = aws_vpc.main.id
-
-#  ingress {
-#    description = "SSH from VPC"
-#    from_port   = 22
-#    to_port     = 22
-#    protocol    = "tcp"
-#    cidr_blocks = ["0.0.0.0/0"]
-#    ipv6_cidr_blocks = ["::/0"]
-#  }
-
-#  ingress {
-#    description = "HTTP from VPC"
-#    from_port   = 80
-#    to_port     = 80
-#    protocol    = "tcp"
-#    cidr_blocks = ["0.0.0.0/0"]
-#    ipv6_cidr_blocks = ["::/0"]
-#  }
-
-#  egress {
-#    from_port   = 0
-#    to_port     = 0
-#    protocol    = "-1"
-#    cidr_blocks = ["0.0.0.0/0"]
-#    ipv6_cidr_blocks = ["::/0"]
-#  }
-#}
-  # ingress {
-  #  from_port   = 80
-  #  to_port     = 80
-  #   protocol    = "tcp"
-  #  cidr_blocks = ["0.0.0.0/0"]
-  # }
-
-  # egress {
-  #  from_port   = 0
-  #  to_port     = 0
-  #  protocol    = "-1"
-  #  cidr_blocks = ["0.0.0.0/0"]
-  # }
-
+ egress {
+   from_port   = 0
+   to_port     = 0
+   protocol    = "-1"
+   cidr_blocks = ["0.0.0.0/0"]
+   ipv6_cidr_blocks = ["::/0"]
+ }
+}
 
 # An internet facing ELB with connections to the 3 public subnet IP addresses of your web servers
-# resource "aws_elb" "elb" {
-#  name            = "section1-elb"
-#  security_groups = [aws_security_group.load-balancer.id]
+resource "aws_elb" "elb" {
+ name            = "section1-elb"
+ security_groups = [aws_security_group.load-balancer.id]
 
-#  # connection to subnets
-#  # subnets = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id, aws_subnet.private_subnets[2].id]
-#    subnets = [aws_subnet.public_subnets[0].id, aws_subnet.public_subnets[1].id, aws_subnet.public_subnets[2].id]
+ # connection to subnets
+ subnets = [aws_subnet.public_subnets[0].id, aws_subnet.public_subnets[1].id, aws_subnet.public_subnets[2].id]
 
-#  listener {
-#    instance_port     = 8000
-#    instance_protocol = "http"
-#    lb_port           = 80
-#    lb_protocol       = "http"
-#  }
+ listener {
+   instance_port     = 8000
+   instance_protocol = "http"
+   lb_port           = 80
+   lb_protocol       = "http"
+ }
 
-#   health_check {
-#    healthy_threshold   = 3
-#    unhealthy_threshold = 2
-#    timeout             = 3
-#    target              = "HTTP:8000/"
-#    interval            = 30
-#  }
+  health_check {
+   healthy_threshold   = 3
+   unhealthy_threshold = 2
+   timeout             = 3
+   target              = "HTTP:8000/"
+   interval            = 30
+ }
 
-#  tags = {
-#    Name = "section1-elb"
-#  }
-#}
+ tags = {
+   Name = "section1-elb"
+ }
+}
 
 # Target group -- 
-#resource "aws_alb_target_group" "default-target-group" {
-#   name     = "${var.ec2_instance_name}-tg"
-#  port     = 80
-#  protocol = "HTTP"
-#  vpc_id   = aws_vpc.main.id
+resource "aws_alb_target_group" "default-target-group" {
+  name     = "${var.ec2_instance_name}-tg"
+ port     = 80
+ protocol = "HTTP"
+ vpc_id   = aws_vpc.main.id
 
-#  health_check {
-#    path                = var.health_check_path
-#    port                = "traffic-port"
-#    healthy_threshold   = 5
-#    unhealthy_threshold = 3
-#    timeout             = 3
-#    interval            = 60
-#    matcher             = "200"
-#  }
-#}
+ health_check {
+   path                = var.health_check_path
+   port                = "traffic-port"
+   healthy_threshold   = 5
+   unhealthy_threshold = 3
+   timeout             = 3
+   interval            = 60
+   matcher             = "200"
+ }
+}
+
+
+
+
+
 
 ########################
 # A NAT gateway allows instances in our private subnets to connect to
@@ -230,4 +178,20 @@ resource "aws_route_table_association" "public_subnet_asso" {
 #  count          = length(var.private_subnet_cidrs)
 #  subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
 #  route_table_id = aws_route_table.private-route-table.id
+# }
+
+
+########################
+# OLD CODE
+########################
+# Creation of 3 private subnets
+# resource "aws_subnet" "private_subnets" {
+#  count             = length(var.private_subnet_cidrs)
+#  vpc_id            = aws_vpc.main.id
+#  cidr_block        = element(var.private_subnet_cidrs, count.index)
+#  availability_zone = element(var.azs, count.index)
+
+#  tags = {
+#    Name = "Private Subnet ${count.index + 1}"
+#  }
 # }

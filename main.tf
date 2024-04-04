@@ -9,18 +9,21 @@
 #  }
 #}
 
-#resource "aws_autoscaling_group" "ec2-cluster" {
+# resource "aws_autoscaling_group" "ec2-cluster" {
 #  desired_capacity   = 3
 #  max_size           = 5
 #  min_size           = 3
 #  health_check_type  = "EC2"
-  # vpc_zone_identifier = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id, aws_subnet.private_subnets[2].id]
+# # vpc_zone_identifier = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id, aws_subnet.private_subnets[2].id]
 #  vpc_zone_identifier = [aws_subnet.public_subnets[0].id, aws_subnet.public_subnets[1].id, aws_subnet.public_subnets[2].id]
 #  target_group_arns = [aws_alb_target_group.default-target-group.arn]
-#  # took out azs and replaced with vpc_zone_identifier
-  # connects vpc in autoscaling group
 
-  # launch_template now preferred to launch configuration
+# }
+
+# took out azs and replaced with vpc_zone_identifier
+# connects vpc in autoscaling group
+
+# launch_template now preferred to launch configuration
 #  launch_template {
 #    id      = aws_launch_template.amitemp.id
 #    version = "$Latest"
@@ -83,29 +86,6 @@ resource "aws_security_group" "ec2" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
-
-  # ingress {
-  #  from_port       = 0
-  #  to_port         = 0
-  #  protocol        = "-1"
-  #  security_groups = [aws_security_group.load-balancer.id]
-  #}
-
-  #ingress {
-  #  from_port   = 22
-  #  to_port     = 22
-  #  protocol    = "tcp"
-  #  cidr_blocks = ["0.0.0.0/0"]
-  #  # using 0.0.0.0/0 enables all IPv4 addresses to access our instances using ssh
-  #}
-
-  #egress {
-  #  from_port   = 0
-  #  to_port     = 0
-  #  protocol    = "-1"
-  #  cidr_blocks = ["0.0.0.0/0"]
-  #}
-#}
 
 # attach ec2 instances to autoscaling group
 #resource "aws_autoscaling_attachment" "asg_attachment_bar" {
